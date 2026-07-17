@@ -61,13 +61,18 @@ Use "country" for:
 - "Population of [country]"
 - "Currency in [country]"
 
-Use "web_search" for:
-- "Search for [topic]"
-- "Find information about [topic]"
-- "Who is [person]?"
-- "What is [concept]?"
-- "Latest news about [topic]"
-- Any query that requires up-to-date or specific information
+6. Tool Name: web_search
+   Purpose: Search the web for information on any topic
+   Arguments: {"tool": "web_search", "query": "search query"}
+   Use for: 
+   - "Search for [topic]"
+   - "Find information about [topic]"
+   - "Who is [person]?"
+   - "What is [concept]?"
+   - "Latest news about [topic]"
+   - Any query that requires up-to-date or specific information
+   - "What happened in [event]?"
+   - "Tell me about [subject]"
 
 ==========
 OUTPUT FORMAT

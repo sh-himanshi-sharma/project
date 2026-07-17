@@ -1,6 +1,11 @@
-# tool/web_search.py - Using DuckDuckGo
+# tool/web_search.py - Simple version
 import requests
-from urllib.parse import quote
+import os
+
+try:
+    from config import FIRECRAWL_API_KEY
+except:
+    FIRECRAWL_API_KEY = os.getenv("FIRECRAWL_API_KEY", "")
 
 def execute(arguments: dict):
     query = arguments.get("query")
@@ -9,57 +14,64 @@ def execute(arguments: dict):
         return "Web search error: No search query provided"
     
     try:
-        # DuckDuckGo Instant Answer API (free, no key)
-        url = f"https://api.duckduckgo.com/?q={quote(query)}&format=json"
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
+        # Direct API call using requests
+        url = "https://api.firecrawl.dev/v1/search"
+        headers = {
+            "Authorization": f"Bearer {FIRECRAWL_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "query": query,
+            "limit": 3
+        }
+        
+        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        
+        if response.status_code != 200:
+            return f"Search error: HTTP {response.status_code} - {response.text[:200]}"
+        
         data = response.json()
         
-        results = []
-        
-        # Get abstract/summary
-        abstract = data.get("AbstractText", "")
-        if abstract:
-            results.append(f"Summary: {abstract}\n")
-        
-        # Get answer (for direct questions)
-        answer = data.get("Answer", "")
-        if answer:
-            results.append(f"Answer: {answer}\n")
-        
-        # Get related topics
-        topics = data.get("RelatedTopics", [])
-        if topics:
-            results.append("Related Topics:")
-            for topic in topics[:5]:  # Limit to 5 results
-                text = topic.get("Text", "")
-                if text:
-                    results.append(f"  • {text}")
-        
-        if not results:
+        if "data" not in data or not data["data"]:
             return f"No results found for '{query}'"
+        
+        results = []
+        results.append(f"🔍 Search Results for: {query}")
+        results.append("="*50)
+        results.append("")
+        
+        for i, result in enumerate(data["data"], 1):
+            title = result.get("title", f"Result {i}")
+            description = result.get("description", "No description available")
+            url = result.get("url", "#")
+            content = result.get("markdown", "")
+            
+            results.append(f"{i}. **{title}**")
+            results.append(f"   {description[:300]}...")
+            results.append(f"   🔗 {url}")
+            
+            if content:
+                preview = content[:200].replace('\n', ' ').strip()
+                if preview:
+                    results.append(f"   📄 {preview}...")
+            
+            results.append("")
         
         return "\n".join(results)
         
-    except requests.exceptions.Timeout:
-        return "Web search error: Request timed out"
-    except requests.exceptions.ConnectionError:
-        return "Web search error: Could not connect to search service"
     except Exception as e:
         return f"Web search error: {e}"
 
 if __name__ == "__main__":
-    # Test the search
     test_queries = [
+        "FIFA World Cup 2026",
+        "Who won the FIFA World Cup?",
         "Python programming",
-        "Who is the Prime Minister of India?",
-        "Latest AI news",
-        "What is machine learning?",
     ]
     
     for query in test_queries:
-        print(f"\n{'='*50}")
+        print(f"\n{'='*60}")
         print(f"Query: {query}")
-        print('='*50)
+        print('='*60)
         result = execute({"query": query})
         print(result)
