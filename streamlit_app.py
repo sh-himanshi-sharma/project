@@ -1,3 +1,4 @@
+# streamlit_app.py
 import streamlit as st
 import sys
 import traceback
@@ -11,9 +12,9 @@ st.set_page_config(
 
 # Title
 st.title("🤖 AI Agent")
-st.caption("Your AI Assistant with 6 Tools: Calculator, Time, Weather, Air Quality, Country Info, Sentiment Analysis")
+st.caption("Your AI Assistant with 6 Tools: Calculator, Time, Weather, Air Quality, Country Info, Web Search")
 
-# Initialize session state variables FIRST
+# Initialize session state
 if "agent" not in st.session_state:
     st.session_state.agent = None
 
@@ -25,7 +26,6 @@ try:
     from agent import Agent
     st.sidebar.success("✅ Agent loaded successfully")
     
-    # Initialize agent if not already done
     if st.session_state.agent is None:
         try:
             st.session_state.agent = Agent()
@@ -48,12 +48,19 @@ with st.sidebar:
     st.write("✅ Get weather information")
     st.write("✅ Get air quality data")
     st.write("✅ Get country information")
-    st.write("✅ Analyze sentiment of text")
+    st.write("✅ Search the web")
     st.write("✅ Remember conversation")
     st.write("---")
     
     st.header("🔧 Available Tools")
-    tools = ["Calculator", "Time", "Weather", "Air Quality", "Country Info", "Sentiment Analysis"]
+    tools = [
+        "🧮 Calculator",
+        "⏰ Time",
+        "🌤️ Weather",
+        "🌍 Air Quality",
+        "🏛️ Country Info",
+        "🔍 Web Search"
+    ]
     for tool in tools:
         st.write(f"• {tool}")
     st.write("---")
@@ -69,9 +76,11 @@ with st.sidebar:
         st.session_state.messages = []
         st.rerun()
     
-    # Show error if agent is None
     if st.session_state.agent is None:
         st.error("⚠️ Agent is not available. Check the error messages above.")
+    
+    st.write("---")
+    st.caption("💡 Try asking: 'Search for Python programming' or 'What's the latest AI news?'")
 
 # Display chat history
 for message in st.session_state.messages:
