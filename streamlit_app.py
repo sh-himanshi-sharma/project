@@ -13,26 +13,30 @@ st.set_page_config(
 st.title("🤖 AI Agent")
 st.caption("Your AI Assistant with 6 Tools: Calculator, Time, Weather, Air Quality, Country Info, Sentiment Analysis")
 
+# Initialize session state variables FIRST
+if "agent" not in st.session_state:
+    st.session_state.agent = None
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 # Try importing agent with error handling
 try:
     from agent import Agent
     st.sidebar.success("✅ Agent loaded successfully")
+    
+    # Initialize agent if not already done
+    if st.session_state.agent is None:
+        try:
+            st.session_state.agent = Agent()
+            st.sidebar.success("✅ Agent initialized")
+        except Exception as e:
+            st.sidebar.error(f"❌ Failed to initialize Agent: {e}")
+            st.session_state.agent = None
+            
 except ImportError as e:
     st.sidebar.error(f"❌ Failed to load Agent: {e}")
     st.sidebar.code(f"Import error: {e}\n\nPlease check that agent.py exists and all imports are correct.")
-    Agent = None
-
-# Initialize agent in session state
-if "agent" not in st.session_state and Agent is not None:
-    try:
-        st.session_state.agent = Agent()
-        st.sidebar.success("✅ Agent initialized")
-    except Exception as e:
-        st.sidebar.error(f"❌ Failed to initialize Agent: {e}")
-        st.session_state.agent = None
-
-if "messages" not in st.session_state:
-    st.session_state.messages = []
 
 # Sidebar info
 with st.sidebar:
@@ -92,6 +96,6 @@ if prompt := st.chat_input("Ask me anything..."):
                     st.markdown(response)
                     st.session_state.messages.append({"role": "assistant", "content": response})
                 except Exception as e:
-                    error_msg = f"❌ Error: {str(e)}\n\n```python\n{traceback.format_exc()}\n```"
+                    error_msg = f"❌ Error: {str(e)}"
                     st.error(error_msg)
                     st.session_state.messages.append({"role": "assistant", "content": error_msg})
