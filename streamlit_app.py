@@ -12,7 +12,7 @@ st.set_page_config(
 
 # Title
 st.title("🤖 AI Agent")
-st.caption("Your AI Assistant with 6 Tools: Calculator, Time, Weather, Air Quality, Country Info, Web Search")
+st.caption("Your AI Assistant with 8 Tools: Calculator, Time, Weather, Air Quality, Country Info, Web Search, News, Stock")
 
 # Initialize session state
 if "agent" not in st.session_state:
@@ -49,6 +49,8 @@ with st.sidebar:
     st.write("✅ Get air quality data")
     st.write("✅ Get country information")
     st.write("✅ Search the web")
+    st.write("✅ Get latest news")
+    st.write("✅ Get stock prices")
     st.write("✅ Remember conversation")
     st.write("---")
     
@@ -59,7 +61,9 @@ with st.sidebar:
         "🌤️ Weather",
         "🌍 Air Quality",
         "🏛️ Country Info",
-        "🔍 Web Search"
+        "🔍 Web Search",
+        "📰 News",
+        "📊 Stock"
     ]
     for tool in tools:
         st.write(f"• {tool}")
@@ -80,7 +84,11 @@ with st.sidebar:
         st.error("⚠️ Agent is not available. Check the error messages above.")
     
     st.write("---")
-    st.caption("💡 Try asking: 'Search for Python programming' or 'What's the latest AI news?'")
+    st.caption("💡 Try asking:")
+    st.caption("• 'What's the price of Apple stock?'")
+    st.caption("• 'Latest news about India'")
+    st.caption("• 'Search for Python programming'")
+    st.caption("• 'Weather in Delhi'")
 
 # Display chat history
 for message in st.session_state.messages:

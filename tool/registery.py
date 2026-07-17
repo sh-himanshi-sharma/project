@@ -4,9 +4,9 @@ from .time_tools import execute as time_tool
 from .weather import execute as weather
 from .air_quality import execute as air_quality
 from .country_info import execute as country_info
-from .sentiment import execute as sentiment
-from .web_search import execute as web_search 
-from .news import execute as news 
+from .web_search import execute as web_search
+from .news import execute as news
+from .stock import execute as stock
 
 TOOLS = {
     "calculator": calculator,
@@ -14,9 +14,9 @@ TOOLS = {
     "weather": weather,
     "air_quality": air_quality,
     "country": country_info,
-    "sentiment": sentiment,
     "web_search": web_search,
-     "news": news,
+    "news": news,
+    "stock": stock,
 }
 
 def execute_tool(tool_name: str, arguments: dict):
