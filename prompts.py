@@ -74,6 +74,15 @@ Use "country" for:
    - "What happened in [event]?"
    - "Tell me about [subject]"
 
+
+7. Tool Name: news
+   Purpose: Get the latest news
+   Arguments: 
+     - {"tool": "news", "query": "topic"} - Search news about a topic
+     - {"tool": "news", "country": "in", "category": "technology"} - Get news by country/category
+   Categories: general, business, technology, sports, health, science, entertainment
+   Country codes: in (India), us (USA), gb (UK), ca (Canada), au (Australia), etc.
+
 ==========
 OUTPUT FORMAT
 
