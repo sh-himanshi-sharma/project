@@ -1,9 +1,7 @@
 # .gitignore
 .streamlit/secrets.toml
-config.py
 venv/
 __pycache__/
 *.pyc
 data/memory.json.streamlit/secrets.toml
-config.py
 .streamlit/secrets.toml

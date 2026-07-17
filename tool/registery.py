@@ -5,6 +5,7 @@ from .weather import execute as weather
 from .air_quality import execute as air_quality
 from .country_info import execute as country_info
 from .sentiment import execute as sentiment
+from .web_search import execute as web_search 
 
 TOOLS = {
     "calculator": calculator,
@@ -13,6 +14,7 @@ TOOLS = {
     "air_quality": air_quality,
     "country": country_info,
     "sentiment": sentiment,
+    "web_search": web_search,
 }
 
 def execute_tool(tool_name: str, arguments: dict):
